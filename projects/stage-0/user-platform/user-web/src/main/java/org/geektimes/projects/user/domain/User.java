@@ -59,6 +59,10 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public boolean isNotExistUser(){
+        return null == id || id <= 0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

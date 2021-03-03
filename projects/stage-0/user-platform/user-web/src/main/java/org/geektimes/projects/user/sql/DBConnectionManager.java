@@ -16,6 +16,17 @@ public class DBConnectionManager {
 
     private Connection connection;
 
+
+    public DBConnectionManager() {
+        try {
+            String databaseURL = "jdbc:derby:/db/user-platform;create=true";
+            connection = DriverManager.getConnection(databaseURL);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
@@ -56,16 +67,16 @@ public class DBConnectionManager {
 //        通过 ClassLoader 加载 java.sql.DriverManager -> static 模块 {}
 //        DriverManager.setLogWriter(new PrintWriter(System.out));
 //
-//        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-//        Driver driver = DriverManager.getDriver("jdbc:derby:/db/user-platform;create=true");
-//        Connection connection = driver.connect("jdbc:derby:/db/user-platform;create=true", new Properties());
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        Driver driver = DriverManager.getDriver("jdbc:derby:/db/user-platform;create=true");
+        Connection connection = driver.connect("jdbc:derby:/db/user-platform;create=true", new Properties());
 
-        String databaseURL = "jdbc:derby:/db/user-platform;create=true";
-        Connection connection = DriverManager.getConnection(databaseURL);
+        //String databaseURL = "jdbc:derby:/db/user-platform;create=true";
+        //Connection connection = DriverManager.getConnection(databaseURL);
 
         Statement statement = connection.createStatement();
         // 删除 users 表
-        System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL)); // false
+        //System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL)); // false
         // 创建 users 表
         System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL)); // false
         System.out.println(statement.executeUpdate(INSERT_USER_DML_SQL));  // 5

@@ -6,9 +6,6 @@
 <body>
 	<div class="container-lg">
 		<!-- Content here -->
-		Hello,World 2021
-	</div>
-	<div class="container-lg">
-	    <a href="/login/start">login</a>
+		 登陆成功！
 	</div>
 </body>
