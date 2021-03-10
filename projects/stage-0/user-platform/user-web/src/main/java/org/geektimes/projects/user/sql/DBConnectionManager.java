@@ -116,7 +116,7 @@ public class DBConnectionManager { // JNDI Component
         // 创建 users 表
         System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL)); // false
         System.out.println(statement.executeUpdate(INSERT_USER_DML_SQL));  // 5
-
+        connection.commit();
         // 执行查询语句（DML）
         ResultSet resultSet = statement.executeQuery("SELECT id,name,password,email,phoneNumber FROM users");
 
@@ -171,15 +171,18 @@ public class DBConnectionManager { // JNDI Component
                 String methodName = typeMethodMappings.get(fieldType);
                 // 可能存在映射关系（不过此处是相等的）
                 String columnLabel = mapColumnLabel(fieldName);
+                if (null != columnLabel && null != methodName) {
                 Method resultSetMethod = ResultSet.class.getMethod(methodName, String.class);
                 // 通过放射调用 getXXX(String) 方法
-                Object resultValue = resultSetMethod.invoke(resultSet, columnLabel);
-                // 获取 User 类 Setter方法
-                // PropertyDescriptor ReadMethod 等于 Getter 方法
-                // PropertyDescriptor WriteMethod 等于 Setter 方法
-                Method setterMethodFromUser = propertyDescriptor.getWriteMethod();
-                // 以 id 为例，  user.setId(resultSet.getLong("id"));
-                setterMethodFromUser.invoke(user, resultValue);
+
+                    Object resultValue = resultSetMethod.invoke(resultSet, columnLabel);
+                    // 获取 User 类 Setter方法
+                    // PropertyDescriptor ReadMethod 等于 Getter 方法
+                    // PropertyDescriptor WriteMethod 等于 Setter 方法
+                    Method setterMethodFromUser = propertyDescriptor.getWriteMethod();
+                    // 以 id 为例，  user.setId(resultSet.getLong("id"));
+                    setterMethodFromUser.invoke(user, resultValue);
+                }
             }
 
             System.out.println(user);

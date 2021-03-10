@@ -3,12 +3,13 @@ package org.geektimes.projects.user.service;
 import org.geektimes.projects.user.domain.User;
 import org.geektimes.projects.user.repository.UserRepository;
 
+import javax.annotation.Resource;
+
 public class DefaultUserServiceImpl implements UserService {
+
+    @Resource(name = "bean/UserRepository")
     private UserRepository userRepository;
 
-    public DefaultUserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public boolean register(User user) {

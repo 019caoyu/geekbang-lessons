@@ -1,16 +1,20 @@
 package org.geektimes.projects.user.repository;
 
 import org.geektimes.function.ThrowableFunction;
-import org.geektimes.context.ComponentContext;
 import org.geektimes.projects.user.domain.User;
 import org.geektimes.projects.user.sql.DBConnectionManager;
 
+import javax.annotation.Resource;
+import javax.persistence.EntityTransaction;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -19,6 +23,9 @@ import java.util.logging.Logger;
 import static org.apache.commons.lang.ClassUtils.wrapperToPrimitive;
 
 public class DatabaseUserRepository implements UserRepository {
+
+    @Resource(name = "bean/DBConnectionManager")
+    private DBConnectionManager dbConnectionManager;
 
     private static Logger logger = Logger.getLogger(DatabaseUserRepository.class.getName());
 
@@ -33,11 +40,7 @@ public class DatabaseUserRepository implements UserRepository {
 
     public static final String QUERY_ALL_USERS_DML_SQL = "SELECT id,name,password,email,phoneNumber FROM users";
 
-    private final DBConnectionManager dbConnectionManager;
 
-    public DatabaseUserRepository() {
-        this.dbConnectionManager = ComponentContext.getInstance().getComponent("bean/DBConnectionManager");
-    }
 
     private Connection getConnection() {
         return dbConnectionManager.getConnection();
@@ -45,7 +48,12 @@ public class DatabaseUserRepository implements UserRepository {
 
     @Override
     public boolean save(User user) {
-        Connection connection = getConnection();
+        getConnection();
+        EntityTransaction transaction = dbConnectionManager.getEntityManager().getTransaction();
+        transaction.begin();
+        dbConnectionManager.getEntityManager().persist(user);
+        transaction.commit();
+       /* Connection connection = getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_DML_SQL);
             preparedStatement.setString(1,user.getName());
@@ -58,7 +66,7 @@ public class DatabaseUserRepository implements UserRepository {
         } catch (SQLException e) {
             logger.log(Level.WARNING, e.getMessage() ,e);
             return false;
-        }
+        }*/
 
         return true;
     }

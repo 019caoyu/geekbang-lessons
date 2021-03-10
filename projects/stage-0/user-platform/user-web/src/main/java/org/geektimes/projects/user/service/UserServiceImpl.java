@@ -1,13 +1,22 @@
 package org.geektimes.projects.user.service;
 
 import org.geektimes.projects.user.domain.User;
+import org.geektimes.projects.user.repository.DatabaseUserRepository;
 import org.geektimes.projects.user.sql.LocalTransactional;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import javax.validation.Validator;
+import java.sql.Connection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserServiceImpl implements UserService {
+
+    private static Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
 
     @Resource(name = "bean/EntityManager")
     private EntityManager entityManager;
@@ -20,14 +29,16 @@ public class UserServiceImpl implements UserService {
     @LocalTransactional
     public boolean register(User user) {
         // before process
-//        EntityTransaction transaction = entityManager.getTransaction();
-//        transaction.begin();
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
 
         // 主调用
-        entityManager.persist(user);
+        try {
+            entityManager.persist(user);
+
 
         // 调用其他方法方法
-        update(user); // 涉及事务
+        //update(user); // 涉及事务
         // register 方法和 update 方法存在于同一线程
         // register 方法属于 Outer 事务（逻辑）
         // update 方法属于 Inner 事务（逻辑）
@@ -51,7 +62,12 @@ public class UserServiceImpl implements UserService {
         // 这种情况 update 方法同样共享了 register 方法物理事务，并且通过 Savepoint 来实现局部提交和回滚
 
         // after process
-        // transaction.commit();
+        transaction.commit();
+        return true;
+        }catch (Exception ex){
+            logger.log(Level.WARNING, ex.getMessage());
+            transaction.rollback();
+        }
 
         return false;
     }
@@ -74,6 +90,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User queryUserByNameAndPassword(String name, String password) {
-        return null;
+            Query query = entityManager.createNativeQuery("SELECT id,name,password,email,phoneNumber FROM users WHERE name=? and password=?",
+                    User.class);
+            query.setParameter(1, name);
+            query.setParameter(2, password);
+            List<User> list = query.getResultList();
+            if (list.isEmpty()) {
+                return new User();
+            }
+            return list.get(0);
     }
 }

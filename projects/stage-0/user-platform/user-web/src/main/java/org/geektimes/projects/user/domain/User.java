@@ -20,15 +20,14 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = AUTO)
-    @NotNull
     private Long id;
 
     @Column
+    @NotNull
     private String name;
 
     @Column
-    @Max(32)
-    @Min(6)
+    @NotNull
     private String password;
 
     @Column

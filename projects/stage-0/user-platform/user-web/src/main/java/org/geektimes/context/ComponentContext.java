@@ -1,5 +1,6 @@
 package org.geektimes.context;
 
+
 import org.geektimes.function.ThrowableAction;
 import org.geektimes.function.ThrowableFunction;
 
@@ -13,11 +14,7 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-/**
- * 组件上下文（Web 应用全局使用）
- */
 public class ComponentContext {
-
     public static final String CONTEXT_NAME = ComponentContext.class.getName();
 
     private static final String COMPONENT_ENV_CONTEXT_NAME = "java:comp/env";
