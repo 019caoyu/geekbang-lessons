@@ -2,13 +2,17 @@ package org.geektimes.projects.user.web.listener;
 
 import org.geektimes.context.ComponentContext;
 import org.geektimes.projects.user.domain.User;
+import org.geektimes.projects.user.management.UserManager;
 import org.geektimes.projects.user.sql.DBConnectionManager;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.lang.management.ManagementFactory;
 import java.util.logging.Logger;
 
 /**
@@ -26,7 +30,8 @@ public class TestingListener implements ServletContextListener {
         dbConnectionManager.getConnection();
         testPropertyFromServletContext(sce.getServletContext());
         testPropertyFromJNDI(context);
-        testUser(dbConnectionManager.getEntityManager());
+        //testUser(dbConnectionManager.getEntityManager());
+        testJolokiaRegisterMBean();
         logger.info("所有的 JNDI 组件名称：[");
         context.getComponentNames().forEach(logger::info);
         logger.info("]");
@@ -42,6 +47,19 @@ public class TestingListener implements ServletContextListener {
         String propertyName = "maxValue";
         logger.info("JNDI Property[" + propertyName + "] : "
                 + context.lookupComponent(propertyName));
+    }
+
+    private void testJolokiaRegisterMBean() {
+        MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+        ObjectName configuration =  null;
+        try {
+            configuration = new ObjectName("jolokia:type=UserManager");
+            User user = new User();
+            user.setName("test");
+            mBeanServer.registerMBean(new UserManager(user), configuration);
+        }catch (Exception ex){
+            logger.warning("Jolokia JMX registerMBean failed");
+        }
     }
 
     private void testUser(EntityManager entityManager) {
