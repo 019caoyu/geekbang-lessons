@@ -45,17 +45,60 @@
         <url-pattern>*.js</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>FrontControllerServlet</servlet-name>
-        <servlet-class>org.geektimes.web.mvc.FrontControllerServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
     <servlet-mapping>
-        <servlet-name>FrontControllerServlet</servlet-name>
-        <!--/ 不匹配 *.jsp, /* 匹配 *.jsp -->
-        <url-pattern>/</url-pattern>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.html</url-pattern>
     </servlet-mapping>
+
+<!--    <servlet>-->
+<!--        <servlet-name>FrontControllerServlet</servlet-name>-->
+<!--        <servlet-class>org.geektimes.web.mvc.FrontControllerServlet</servlet-class>-->
+<!--        <load-on-startup>1</load-on-startup>-->
+<!--    </servlet>-->
+
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>FrontControllerServlet</servlet-name>-->
+<!--        &lt;!&ndash;/ 不匹配 *.jsp, /* 匹配 *.jsp &ndash;&gt;-->
+<!--        <url-pattern>/</url-pattern>-->
+<!--    </servlet-mapping>-->
+
+    <!--servlet test start-->
+    <servlet>
+        <servlet-name>HelloForm</servlet-name>
+        <servlet-class>org.geektimes.projects.user.test.HelloForm</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HelloForm</servlet-name>
+        <url-pattern>/HelloForm</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CheckBox</servlet-name>
+        <servlet-class>org.geektimes.projects.user.test.CheckBox</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckBox</servlet-name>
+        <url-pattern>/CheckBox</url-pattern>
+    </servlet-mapping>
+   <!--error handle -->
+    <servlet>
+        <servlet-name>ErrorHandler</servlet-name>
+        <servlet-class>org.geektimes.projects.user.test.ErrorHandler</servlet-class>
+    </servlet>
+    <!-- servlet mappings -->
+    <servlet-mapping>
+        <servlet-name>ErrorHandler</servlet-name>
+        <url-pattern>/ErrorHandler</url-pattern>
+    </servlet-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/ErrorHandler</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type >
+        <location>/ErrorHandler</location>
+    </error-page>
+    <!--servlet test end-->
 
     <!--<filter>-->
         <!--<filter-name>HttpSessionFilter</filter-name>-->
@@ -81,9 +124,9 @@
         <filter-name>CharsetEncodingFilter</filter-name>
             <url-pattern>/*</url-pattern>
             <dispatcher>FORWARD</dispatcher>
-            <dispatcher>REQUEST</dispatcher>
+<!--            <dispatcher>REQUEST</dispatcher>-->
             <dispatcher>INCLUDE</dispatcher>
-            <dispatcher>ERROR</dispatcher>
+<!--            <dispatcher>ERROR</dispatcher>-->
     </filter-mapping>
 
     <!--<filter>-->
