@@ -80,6 +80,29 @@
         <servlet-name>CheckBox</servlet-name>
         <url-pattern>/CheckBox</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ReadCookies</servlet-name>
+        <servlet-class>org.geektimes.projects.user.test.ReadCookies</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReadCookies</servlet-name>
+        <url-pattern>/ReadCookies</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>SessionTrack</servlet-name>
+        <servlet-class>org.geektimes.projects.user.test.SessionTrack</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SessionTrack</servlet-name>
+        <url-pattern>/SessionTrack</url-pattern>
+    </servlet-mapping>
+
+    <!-- session config information -->
+    <session-config>
+        <session-timeout>15</session-timeout>
+    </session-config>
+
    <!--error handle -->
     <servlet>
         <servlet-name>ErrorHandler</servlet-name>

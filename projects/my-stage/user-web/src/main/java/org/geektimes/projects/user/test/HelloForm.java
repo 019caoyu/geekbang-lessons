@@ -2,8 +2,10 @@ package org.geektimes.projects.user.test;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,13 +18,24 @@ public class HelloForm extends HttpServlet {
      */
     public HelloForm() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //为名字和姓氏创建 Cookie
+        Cookie namec = new Cookie("name", URLEncoder.encode(request.getParameter("name"), "ISO-8859-1"));
+        Cookie urlc = new Cookie("url",
+                request.getParameter("url"));
+
+        // 为两个 Cookie 设置过期日期为 24 小时后
+        namec.setMaxAge(60*60*24);
+        urlc.setMaxAge(60*60*24);
+
+        // 在响应头中添加两个 Cookie
+        response.addCookie( namec );
+        response.addCookie( urlc );
         // 设置响应内容类型
         response.setContentType("text/html;charset=UTF-8");
 
