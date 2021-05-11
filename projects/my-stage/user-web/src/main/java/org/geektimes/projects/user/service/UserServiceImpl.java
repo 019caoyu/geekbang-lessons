@@ -5,7 +5,7 @@ import org.geektimes.projects.user.sql.LocalTransactional;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
-import javax.validation.Validator;
+//import javax.validation.Validator;
 
 public class UserServiceImpl implements UserService {
 
@@ -14,7 +14,7 @@ public class UserServiceImpl implements UserService {
     private EntityManager entityManager;
 
     @Resource(name = "bean/Validator")
-    private Validator validator;
+    //private Validator validator;
 
     @Override
     // 默认需要事务
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         // register 方法和 update 方法存在于同一线程
         // register 方法属于 Outer 事务（逻辑）
         // update 方法属于 Inner 事务（逻辑）
-        // Case 1 : 两个方法均涉及事务（并且传播行为和隔离级别相同）
+        // Case 1 : 两个方法均涉及事务（并且传播行为和隔离级别相同,比如：PROPAGATION_REQUIRED（事务创建者））
         // 两者共享一个物理事务，但存在两个逻辑事务
         // 利用 ThreadLocal 管理一个物理事务（Connection）
 

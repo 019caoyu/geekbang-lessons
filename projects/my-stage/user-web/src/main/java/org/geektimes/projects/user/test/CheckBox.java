@@ -17,6 +17,7 @@ public class CheckBox extends HttpServlet {
         
         // 设置响应内容类型
         response.setContentType("text/html;charset=UTF-8");
+        //response.setStatus();
 
         PrintWriter out = response.getWriter();
         String title = "读取复选框数据";

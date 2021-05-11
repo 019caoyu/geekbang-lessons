@@ -14,13 +14,20 @@
     Tomcat JNDI : http://tomcat.apache.org/tomcat-7.0-doc/jndi-resources-howto.html
     -->
     <!-- 资源或者组件类似于 Spring Bean -->
+    <!--<Resource name="jdbc/UserPlatformDB"-->
+              <!--type="javax.sql.DataSource" auth="Container"-->
+              <!--description="Derby database for User Platform"-->
+              <!--maxActive="100" maxIdle="30" maxWait="10000"-->
+              <!--username="" password=""-->
+              <!--driverClassName="org.apache.derby.jdbc.EmbeddedDriver"-->
+              <!--url="jdbc:derby:/db/user-platform;create=true"/>-->
     <Resource name="jdbc/UserPlatformDB"
               type="javax.sql.DataSource" auth="Container"
               description="Derby database for User Platform"
               maxActive="100" maxIdle="30" maxWait="10000"
-              username="" password=""
-              driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
-              url="jdbc:derby:db/user-platform;create=true"/>
+              username="root" password="root"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/my_test?characterEncoding=utf8"/>
 
     <!-- FactoryBean -->
     <Resource name="bean/DBConnectionManager" auth="Container"
@@ -37,9 +44,9 @@
               propertiesLocation="META-INF/jpa-datasource.properties"
               factory="org.apache.naming.factory.BeanFactory"/>
 
-    <Resource name="bean/Validator" auth="Container"
-              type="org.geektimes.projects.user.validator.bean.validation.DelegatingValidator"
-              factory="org.apache.naming.factory.BeanFactory"/>
+    <!--<Resource name="bean/Validator" auth="Container"-->
+              <!--type="org.geektimes.projects.user.validator.bean.validation.DelegatingValidator"-->
+              <!--factory="org.apache.naming.factory.BeanFactory"/>-->
 
     <Resource name="bean/UserService" auth="Container"
               type="org.geektimes.projects.user.service.UserServiceImpl"
@@ -49,32 +56,32 @@
     <Environment name="maxValue" value="12"
                  type="java.lang.Integer" override="false"/>
 
-    <Resource name="bean/TestingComponent" auth="Container"
-              type="org.geektimes.projects.user.web.listener.TestingComponent"
-              factory="org.apache.naming.factory.BeanFactory"/>
+    <!--<Resource name="bean/TestingComponent" auth="Container"-->
+              <!--type="org.geektimes.projects.user.web.listener.TestingComponent"-->
+              <!--factory="org.apache.naming.factory.BeanFactory"/>-->
 
-    <Resource name="jms/activemq-factory"
-              auth="Container"
-              type="org.apache.activemq.ActiveMQConnectionFactory"
-              description="JMS Connection Factory"
-              factory="org.apache.activemq.jndi.JNDIReferenceFactory"
-              brokerURL="vm://localhost"
-              brokerName="LocalActiveMQBroker"
-              useEmbeddedBroker="false"/>
+    <!--<Resource name="jms/activemq-factory"-->
+              <!--auth="Container"-->
+              <!--type="org.apache.activemq.ActiveMQConnectionFactory"-->
+              <!--description="JMS Connection Factory"-->
+              <!--factory="org.apache.activemq.jndi.JNDIReferenceFactory"-->
+              <!--brokerURL="vm://localhost"-->
+              <!--brokerName="LocalActiveMQBroker"-->
+              <!--useEmbeddedBroker="false"/>-->
 
-    <Resource name="jms/activemq-topic"
-              auth="Container"
-              type="org.apache.activemq.command.ActiveMQTopic"
-              factory="org.apache.activemq.jndi.JNDIReferenceFactory"
-              physicalName="activemq-topic"/>
+    <!--<Resource name="jms/activemq-topic"-->
+              <!--auth="Container"-->
+              <!--type="org.apache.activemq.command.ActiveMQTopic"-->
+              <!--factory="org.apache.activemq.jndi.JNDIReferenceFactory"-->
+              <!--physicalName="activemq-topic"/>-->
 
-    <Resource name="jms/message-producer"
-              auth="Container"
-              type="javax.jms.MessageProducer"
-              factory="org.geektimes.projects.user.message.MessageProducerFactory"
-              connectionFactoryJndiName="activemq-factory"
-              queueName="TEST.FOO"
-    />
+    <!--<Resource name="jms/message-producer"-->
+              <!--auth="Container"-->
+              <!--type="javax.jms.MessageProducer"-->
+              <!--factory="org.geektimes.projects.user.message.MessageProducerFactory"-->
+              <!--connectionFactoryJndiName="activemq-factory"-->
+              <!--queueName="TEST.FOO"-->
+    <!--/>-->
 
     <!--    <Resource name="jdbc/realm-db"-->
     <!--              auth="Container"-->
@@ -110,8 +117,8 @@
     <!--           userTable="auth.users" userNameCol="user_name" userCredCol="user_pass"-->
     <!--           userRoleTable="auth.user_roles" roleNameCol="role_name"/>-->
 
-    <Realm className="org.apache.catalina.realm.LockOutRealm">
-        <Realm className="org.apache.catalina.realm.MemoryRealm"
-               pathname="conf/tomcat-users.xml"/>
-    </Realm>
+    <!--<Realm className="org.apache.catalina.realm.LockOutRealm">-->
+        <!--<Realm className="org.apache.catalina.realm.MemoryRealm"-->
+               <!--pathname="conf/tomcat-users.xml"/>-->
+    <!--</Realm>-->
 </Context>

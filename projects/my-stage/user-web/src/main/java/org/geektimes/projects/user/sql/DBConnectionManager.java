@@ -85,8 +85,8 @@ public class DBConnectionManager { // JNDI Component
 
     public static final String DROP_USERS_TABLE_DDL_SQL = "DROP TABLE users";
 
-    public static final String CREATE_USERS_TABLE_DDL_SQL = "CREATE TABLE users(" +
-            "id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
+    public static final String CREATE_USERS_TABLE_DDL_SQL = "CREATE TABLE IF NOT EXISTS users(" +
+            "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
             "name VARCHAR(16) NOT NULL, " +
             "password VARCHAR(64) NOT NULL, " +
             "email VARCHAR(64) NOT NULL, " +
@@ -109,12 +109,15 @@ public class DBConnectionManager { // JNDI Component
 //        Driver driver = DriverManager.getDriver("jdbc:derby:/db/user-platform;create=true");
 //        Connection connection = driver.connect("jdbc:derby:/db/user-platform;create=true", new Properties());
 
-        String databaseURL = "jdbc:derby:/db/user-platform;create=true";
-        Connection connection = DriverManager.getConnection(databaseURL);
+        String databaseURL = "jdbc:mysql://localhost:3306/my_test?characterEncoding=utf8";
+        Properties properties = new Properties();
+        properties.setProperty("user", "root");
+        properties.setProperty("password", "root");
+        Connection connection = DriverManager.getConnection(databaseURL,properties);
 
         Statement statement = connection.createStatement();
         // 删除 users 表
-        System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL)); // false
+        //System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL)); // false
         // 创建 users 表
         System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL)); // false
         System.out.println(statement.executeUpdate(INSERT_USER_DML_SQL));  // 5

@@ -12,13 +12,13 @@
     </context-param>
 
     <!-- 请确保这个 Listener 放置在首位 -->
-    <!--<listener>-->
-        <!--<listener-class>org.geektimes.projects.user.web.listener.ComponentContextInitializerListener</listener-class>-->
-    <!--</listener>-->
+    <listener>
+        <listener-class>org.geektimes.projects.user.web.listener.ComponentContextInitializerListener</listener-class>
+    </listener>
 
-    <!--<listener>-->
-        <!--<listener-class>org.geektimes.projects.user.web.listener.TestingListener</listener-class>-->
-    <!--</listener>-->
+    <listener>
+        <listener-class>org.geektimes.projects.user.web.listener.TestingListener</listener-class>
+    </listener>
 
     <servlet>
         <servlet-name>default</servlet-name>
@@ -63,40 +63,51 @@
 <!--    </servlet-mapping>-->
 
     <!--servlet test start-->
-    <servlet>
-        <servlet-name>HelloForm</servlet-name>
-        <servlet-class>org.geektimes.projects.user.test.HelloForm</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>HelloForm</servlet-name>
-        <url-pattern>/HelloForm</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>HelloForm</servlet-name>-->
+        <!--<servlet-class>org.geektimes.projects.user.test.HelloForm</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>HelloForm</servlet-name>-->
+        <!--<url-pattern>/HelloForm</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>CheckBox</servlet-name>
-        <servlet-class>org.geektimes.projects.user.test.CheckBox</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CheckBox</servlet-name>
-        <url-pattern>/CheckBox</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>CheckBox</servlet-name>-->
+        <!--<servlet-class>org.geektimes.projects.user.test.CheckBox</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>CheckBox</servlet-name>-->
+        <!--<url-pattern>/CheckBox</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>ReadCookies</servlet-name>
-        <servlet-class>org.geektimes.projects.user.test.ReadCookies</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ReadCookies</servlet-name>
-        <url-pattern>/ReadCookies</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>SessionTrack</servlet-name>
-        <servlet-class>org.geektimes.projects.user.test.SessionTrack</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SessionTrack</servlet-name>
-        <url-pattern>/SessionTrack</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>ReadCookies</servlet-name>-->
+        <!--<servlet-class>org.geektimes.projects.user.test.ReadCookies</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>ReadCookies</servlet-name>-->
+        <!--<url-pattern>/ReadCookies</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet>-->
+        <!--<servlet-name>SessionTrack</servlet-name>-->
+        <!--<servlet-class>org.geektimes.projects.user.test.SessionTrack</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>SessionTrack</servlet-name>-->
+        <!--<url-pattern>/SessionTrack</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <!--<servlet>-->
+        <!--<display-name>UploadServlet</display-name>-->
+        <!--<servlet-name>UploadServlet</servlet-name>-->
+        <!--<servlet-class>org.geektimes.projects.user.test.UploadServlet</servlet-class>-->
+    <!--</servlet>-->
+
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>UploadServlet</servlet-name>-->
+        <!--<url-pattern>/UploadServlet</url-pattern>-->
+    <!--</servlet-mapping>-->
 
     <!-- session config information -->
     <session-config>
@@ -191,25 +202,27 @@
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
 
-    <!--    <resource-ref>-->
-    <!--        <description>DB Connection</description>-->
-    <!--        &lt;!&ndash; JNDI javax.naming.Name &ndash;&gt;-->
-    <!--        <res-ref-name>jdbc/UserPlatformDB</res-ref-name>-->
-    <!--        <res-type>javax.sql.DataSource</res-type>-->
-    <!--        <res-auth>Container</res-auth>-->
-    <!--    </resource-ref>-->
+    <!-- Tomcat JNDI Set Up -->
+    <!-- Web app reference the global context.xml resource  -->
+        <resource-ref>
+            <description>DB Connection</description>
+            <!-- JNDI javax.naming.Name -->
+            <res-ref-name>jdbc/UserPlatformDB</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+        </resource-ref>
 
-    <!--    <resource-env-ref>-->
-    <!--        <description>-->
-    <!--            Object factory for DBConnectionManager instances.-->
-    <!--        </description>-->
-    <!--        <resource-env-ref-name>-->
-    <!--            bean/DBConnectionManager-->
-    <!--        </resource-env-ref-name>-->
-    <!--        <resource-env-ref-type>-->
-    <!--            org.geektimes.projects.user.sql.DBConnectionManager-->
-    <!--        </resource-env-ref-type>-->
-    <!--    </resource-env-ref>-->
+        <resource-env-ref>
+            <description>
+                Object factory for DBConnectionManager instances.
+            </description>
+            <resource-env-ref-name>
+                bean/DBConnectionManager
+            </resource-env-ref-name>
+            <resource-env-ref-type>
+                org.geektimes.projects.user.sql.DBConnectionManager
+            </resource-env-ref-type>
+        </resource-env-ref>
 
     <!-- Define a Security Constraint on this Application -->
     <!--<security-constraint>-->

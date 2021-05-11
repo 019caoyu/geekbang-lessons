@@ -49,6 +49,11 @@
             <artifactId>derby</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
         <!-- Hibernate ORM Core -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -62,15 +67,15 @@
         </dependency>
 
         <!-- Hibernate Validator -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate</groupId>-->
+            <!--<artifactId>hibernate-validator</artifactId>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.el</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.glassfish</groupId>-->
+            <!--<artifactId>javax.el</artifactId>-->
+        <!--</dependency>-->
 
     </dependencies>
 
@@ -100,7 +105,11 @@
                                 <configuration>
                                     <!-- ServletContext 路径 -->
                                     <path>/</path>
+
+                                    <!--配置 Tomcat 插件 JNDI 信息-->
+                                    <!--Enable Tomcat JNDI-->
                                     <enableNaming>true</enableNaming>
+                                    <!--Tomcat JNDI 配置文件context.xml 所在目录-->
                                     <tomcatConfigurationFilesDirectory>
                                         src/main/webapp/META-INF/conf/
                                     </tomcatConfigurationFilesDirectory>

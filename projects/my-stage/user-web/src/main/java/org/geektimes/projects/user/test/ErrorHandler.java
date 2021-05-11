@@ -50,13 +50,16 @@ public class ErrorHandler extends HttpServlet {
             out.println("<h2>错误信息</h2>");
             out.println("Servlet Name : " + servletName +
                     "</br></br>");
-            out.println("异常类型 : " +
-                    throwable.getClass( ).getName( ) +
-                    "</br></br>");
-            out.println("请求 URI: " + requestUri +
-                    "<br><br>");
-            out.println("异常信息: " +
-                    throwable.getMessage( ));
+            if (null != throwable) {
+                out.println("异常类型 : " +
+                        throwable.getClass().getName() +
+                        "</br></br>");
+
+                out.println("请求 URI: " + requestUri +
+                        "<br><br>");
+                out.println("异常信息: " +
+                        throwable.getMessage());
+            }
 
         out.println("</body>");
         out.println("</html>");

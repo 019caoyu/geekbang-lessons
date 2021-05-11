@@ -13,6 +13,9 @@
     选择一个文件:
     <input type="file" name="uploadFile" />
     <br/><br/>
+    选择一个文件:
+    <input type="file" name="uploadFile2" />
+    <br/><br/>
     <input type="submit" value="上传" />
 </form>
 </body>
