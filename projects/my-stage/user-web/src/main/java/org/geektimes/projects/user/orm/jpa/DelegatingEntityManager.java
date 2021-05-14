@@ -29,6 +29,14 @@ public class DelegatingEntityManager implements EntityManager {
 
     private EntityManagerFactory entityManagerFactory;
 
+   /* private ThreadLocal<EntityManager> entityManagerThreadLocal =  new ThreadLocal<EntityManager>(){
+        protected EntityManager initialValue() {
+            return entityManagerFactory.createEntityManager();
+        }
+    };*/
+
+    private ThreadLocal<EntityManager> entityManagerThreadLocal = new ThreadLocal<>();
+
     @PostConstruct
     public void init() {
         this.entityManagerFactory =
@@ -37,10 +45,19 @@ public class DelegatingEntityManager implements EntityManager {
 
     /**
      * 如果存在多态的情况，尽可能保持方法是 protected
+     * 注意这里为了多线程安全，每调用一次都会创建新的EntityManager
+     * 如果要手动管理事务需要保持 事务的EntityManager 和 执行 操作的 EntityManager 是一个实例
+     * @se org.geektimes.projects.user.web.listener.TestingListener#testUser(javax.persistence.EntityManager)
+     *
+     * 使用ThreadLocal 替代这个方案
+     *
      * @return
      */
     protected EntityManager getEntityManager(){ // 每个线程获取的 EntityManager 实例，原型实例
-        return entityManagerFactory.createEntityManager();
+        if (null == entityManagerThreadLocal.get()){
+            entityManagerThreadLocal.set(entityManagerFactory.createEntityManager());
+        }
+        return entityManagerThreadLocal.get();
     }
 
     // 假设子类

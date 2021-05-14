@@ -1,17 +1,22 @@
 package org.geektimes.projects.user.web.listener;
 
+import org.eclipse.microprofile.config.Config;
+import org.geektimes.configuration.microprofile.config.DefaultConfigProviderResolver;
 import org.geektimes.context.ClassicComponentContext;
-import org.geektimes.function.ThrowableAction;
 import org.geektimes.projects.user.domain.User;
+import org.geektimes.projects.user.management.UserManager;
 import org.geektimes.projects.user.sql.DBConnectionManager;
 
-//import javax.jms.*;
+import javax.management.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.lang.management.ManagementFactory;
 import java.util.logging.Logger;
+
+//import javax.jms.*;
 
 /**
  * 测试用途
@@ -28,13 +33,41 @@ public class TestingListener implements ServletContextListener {
         dbConnectionManager.getConnection();
         testPropertyFromServletContext(sce.getServletContext());
         testPropertyFromJNDI(context);
-        testUser(dbConnectionManager.getEntityManager());
+        //testUser(dbConnectionManager.getEntityManager());
         logger.info("所有的 JNDI 组件名称：[");
         context.getComponentNames().forEach(logger::info);
         logger.info("]");
 
+        testJMXByJokoia();
+        //testPropertyFromConfig();
+
         //ConnectionFactory connectionFactory = context.getComponent("jms/activemq-factory");
         //testJms(connectionFactory);
+    }
+
+    private void testPropertyFromConfig() {
+        Config config = DefaultConfigProviderResolver.instance().getConfig();
+        String propertyName = "application.name";
+        logger.info("My Configuration Property[" + propertyName + "] : "
+                + config.getConfigValue(propertyName));
+
+    }
+
+    private void testJMXByJokoia() {
+        MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+
+        try {
+            // 为 UserMXBean 定义 ObjectName
+            ObjectName objectName = new ObjectName("org.geektimes.projects.user.management:type=User");
+            // 创建 UserMBean 实例
+            mBeanServer.registerMBean(createUserMBean(getUser(1L)), objectName);
+        } catch (Exception e) {
+            logger.warning(e.getMessage());
+        }
+    }
+
+    private  Object createUserMBean(User user){
+        return new UserManager(user);
     }
 
     private void testPropertyFromServletContext(ServletContext servletContext) {
@@ -51,19 +84,44 @@ public class TestingListener implements ServletContextListener {
 
     private void testUser(EntityManager entityManager) {
         User user = new User();
+        //user.setId(30L);
         user.setName("小马哥");
-        user.setPassword("******");
+        user.setPassword("********");
         user.setEmail("mercyblitz@gmail.com");
         user.setPhoneNumber("abcdefg");
+
+      /*  不使用ThreadLocal 方案时，解决方案，每次请求都是新的EntityManager
+      DelegatingEntityManager delegatingEntityManager = null;
+      if (entityManager instanceof DelegatingEntityManager){
+            delegatingEntityManager = (DelegatingEntityManager)entityManager;
+            entityManager = delegatingEntityManager.getEntityManager();
+        }
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         entityManager.persist(user);
         //entityManager.flush();
         transaction.commit();
+        System.out.println(entityManager.find(User.class, user.getId()));*/
 
-        //System.out.println(user);
+        // ThreadLocal 方案
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        entityManager.persist(user);
+        //entityManager.flush();
+        transaction.commit();
         System.out.println(entityManager.find(User.class, user.getId()));
+        //System.out.println(user);
+
     }
+
+    private User getUser(long id) {
+        ClassicComponentContext context = ClassicComponentContext.getInstance();
+        DBConnectionManager dbConnectionManager = context.getComponent("bean/DBConnectionManager");
+        EntityManager entityManager = dbConnectionManager.getEntityManager();
+        return  entityManager.find(User.class, id);
+    }
+
+
 
     /*private void testJms(ConnectionFactory connectionFactory) {
         ThrowableAction.execute(() -> {

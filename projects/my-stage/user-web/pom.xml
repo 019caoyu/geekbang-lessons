@@ -27,6 +27,12 @@
             <version>${revision}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.geekbang.projects</groupId>
+            <artifactId>my-configuration</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -42,6 +48,11 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
         </dependency>
 
         <dependency>
@@ -66,7 +77,7 @@
             <artifactId>hibernate-entitymanager</artifactId>
         </dependency>
 
-        <!-- Hibernate Validator -->
+         <!--Hibernate Validator-->
         <!--<dependency>-->
             <!--<groupId>org.hibernate</groupId>-->
             <!--<artifactId>hibernate-validator</artifactId>-->
@@ -76,6 +87,11 @@
             <!--<groupId>org.glassfish</groupId>-->
             <!--<artifactId>javax.el</artifactId>-->
         <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.jolokia</groupId>
+            <artifactId>jolokia-core</artifactId>
+        </dependency>
 
     </dependencies>
 

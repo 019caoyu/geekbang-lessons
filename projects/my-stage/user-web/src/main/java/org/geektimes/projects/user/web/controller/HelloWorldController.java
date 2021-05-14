@@ -1,6 +1,9 @@
 package org.geektimes.projects.user.web.controller;
 
 
+import org.eclipse.microprofile.config.Config;
+import org.geektimes.configuration.microprofile.config.DefaultConfigProviderResolver;
+import org.geektimes.configuration.microprofile.config.servlet.listener.ConfigServletRequestListener;
 import org.geektimes.web.mvc.controller.PageController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,4 +24,5 @@ public class HelloWorldController implements PageController {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         return "index.jsp";
     }
+
 }
